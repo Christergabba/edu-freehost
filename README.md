@@ -10,6 +10,8 @@ Når du publiserer repositoryet med Cloudflare Pages, blir guiden også forsiden
 
 Guiden tar deg fra konto og kode til en nettadresse du kan dele med elevene. Du får en ferdig mattequiz, en kopierbar AI-prompt og hjelp med vanlige feil.
 
+Vil du videre? [Neste steg med Codex eller Claude Code](docs/cloudflare-guide.md#neste-steg) viser hvordan AI kan redigere filene direkte på datamaskinen og håndtere commit og push, i **VS Code eller terminalen**. Dette er et valgfritt tillegg til hovedguiden i nettleseren.
+
 | Fil | Innhold |
 | --- | --- |
 | [docs/cloudflare-guide.md](docs/cloudflare-guide.md) | Hele veiledningen, steg for steg |

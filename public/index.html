@@ -51,7 +51,8 @@
 <li><a href="#steg-7">7. Oppdater verktøyet</a></li>
 <li><a href="#steg-8">8. Lag noe nytt med AI</a></li>
 <li><a href="#steg-9">9. Feilsøking</a></li>
-<li><a href="#steg-10">10. Personvern og sikkerhet</a></li></ol>
+<li><a href="#steg-10">10. Personvern og sikkerhet</a></li>
+<li><a href="#neste-steg">11. Neste steg med AI</a></li></ol>
         </nav>
         <p class="aside-note">Vil du se resultatet først?<br><a href="eksempel.html">Åpne eksempelappen →</a></p>
       </aside>
@@ -377,6 +378,94 @@ public/
   favicon.svg      (ikon i nettleserfanen)</code></pre></div>
 <p>Alt i <strong>public</strong> publiseres som nettside. Forsiden viser guiden, og knappen <strong>Prøv mattequizen</strong> åpner eksempelsiden. README og Markdown-utgaven av guiden kan også leses på GitHub. Starter du med et tomt repository, er <code>public/index.html</code> den eneste filen Cloudflare trenger for å publisere eksempelappen. Du trenger ingen installasjonsfiler, Docker eller GitHub Actions.</p>
 </details>
+</section>
+<section class="chapter" id="neste-steg">
+<h2>11. Neste steg: la AI jobbe direkte i prosjektet</h2>
+<p><strong>Dette er valgfritt.</strong> Hele hovedguiden kan gjennomføres i nettleseren. Når du vil videreutvikle verktøyet oftere, kan du bruke <strong>Codex</strong> eller <strong>Claude Code</strong> direkte i prosjektet på datamaskinen din. Velg mellom <strong>VS Code</strong>, et program som viser filene og AI-samtalen i samme vindu, og <strong>terminalen</strong>, et tekstvindu der du starter programmer med kommandoer.</p>
+<p>I stedet for å kopiere kode frem og tilbake kan du beskrive en endring og la AI-verktøyet redigere filene direkte. Det kan også kontrollere endringen, opprette en <strong>commit</strong> (lagre en versjon lokalt) og gjøre <strong>push</strong> (sende versjonen til GitHub). Cloudflare publiserer deretter som før.</p>
+<blockquote><p><strong>Den nye arbeidsflyten:</strong> Du beskriver endringen → AI endrer og kontrollerer filene på datamaskinen → AI lager commit og pusher til GitHub → Cloudflare publiserer → Elevene bruker samme nettadresse.</p></blockquote>
+<p>Du trenger Git og tilgang til det AI-verktøyet du velger. Tilgang, abonnement og eventuell betaling avhenger av verktøyet og kontoen din. Gratis publisering hos Cloudflare betyr ikke at AI-verktøyet er gratis. Velg ett av alternativene nedenfor; du trenger ikke gjøre begge.</p>
+<a id="vscode"></a>
+<h3>A. Bruk VS Code</h3>
+<p>Du bruker her <strong>VS Code installert på datamaskinen</strong>, med Codex eller Claude Code som en utvidelse. Du trenger ikke kopiere hele HTML-filen inn i en vanlig AI-chat.</p>
+<ol>
+<li>Installer <a href="https://code.visualstudio.com/download">Visual Studio Code</a> og <a href="https://git-scm.com/downloads">Git</a>. Start VS Code på nytt hvis Git nettopp ble installert.
+</li>
+<li>Åpne <strong>ditt eget repository</strong> på GitHub og kopier adressen under <strong>Code → HTTPS</strong>.
+</li>
+<li>Åpne kommandopaletten i VS Code: <strong>Ctrl+Shift+P</strong> på Windows/Linux eller <strong>⌘Shift+P</strong> på Mac. Søk etter <strong>Git: Clone</strong>, velg kommandoen og lim inn repository-adressen.
+</li>
+<li>Velg en mappe på datamaskinen der prosjektet skal lagres. Når kopieringen er ferdig, velg <strong>Open</strong> for å åpne prosjektet. Har du allerede en lokal Git-kopi, bruker du <strong>File → Open Folder…</strong> i stedet.
+</li>
+<li>Åpne <strong>Extensions</strong> i sidemenyen, og installer <strong>én</strong> av disse offisielle utvidelsene:
+<ul>
+<li><strong>Codex</strong> fra <strong>OpenAI</strong>: <a href="https://learn.chatgpt.com/docs/codex/ide">offisiell installasjon og veiledning</a>.
+</li>
+<li><strong>Claude Code</strong> fra <strong>Anthropic</strong>: <a href="https://code.claude.com/docs/en/vs-code">offisiell installasjon og veiledning</a>.
+</li></ul>
+</li>
+<li>Åpne panelet til utvidelsen du valgte og følg <strong>Sign in</strong>. Hvis du ikke finner panelet, søk etter <strong>Codex</strong> eller <strong>Claude Code</strong> i kommandopaletten. Følg eventuelle oppsettstrinn for operativsystemet ditt i veiledningen.
+</li>
+<li>Lim inn oppgaveprompten i <strong>del C</strong> nedenfor i AI-panelet. AI kan nå lese og endre filene i den åpne prosjektmappen.
+</li></ol>
+<p>Se <a href="https://code.visualstudio.com/docs/sourcecontrol/repos-remotes#_clone-repositories">VS Codes veiledning for å klone et eksisterende repository</a> hvis du står fast. Du skal bruke prosjektet du allerede har koblet til Cloudflare. Valget <strong>Publish to GitHub</strong> oppretter et nytt repository og er ikke nødvendig her.</p>
+<p><strong>Se over og lagre med Git:</strong> Åpne <strong>Source Control</strong> i sidemenyen og klikk på en endret fil for å se forskjellen. Du kan la AI håndtere commit og push med prompten nedenfor. Vil du gjøre det selv, ber du AI stoppe etter endring og kontroll, og bruker disse knappene:</p>
+<ol>
+<li>Klikk <strong>+ (Stage Changes)</strong> ved filene du vil ha med. Dette velger dem til neste commit.
+</li>
+<li>Skriv en kort melding, for eksempel <code>Legg til flere matteoppgaver</code>, og klikk <strong>Commit</strong>.
+</li>
+<li>Velg <strong>… → Push</strong> for å sende commiten til GitHub. <strong>Sync Changes</strong> henter også endringer fra GitHub før den sender dine. Følg eventuell GitHub-pålogging.
+</li></ol>
+<p>En lagret fil eller lokal commit er ikke nok til å publisere. Etter push til produksjonsbranchen starter Cloudflare automatisk. Les mer i <a href="https://code.visualstudio.com/docs/sourcecontrol/quickstart">VS Codes Git-veiledning</a>.</p>
+<a id="terminal"></a>
+<h3>B. Bruk terminalen</h3>
+<p><strong>Gjør et engangsoppsett:</strong></p>
+<ol>
+<li>Installer Git og <strong>ett</strong> av AI-verktøyene. Følg de offisielle veiledningene for din datamaskin: <a href="https://git-scm.com/downloads">Git</a>, <a href="https://learn.chatgpt.com/docs/codex/cli">Codex CLI</a> eller <a href="https://code.claude.com/docs/en/quickstart">Claude Code</a>.
+</li>
+<li>Logg inn i AI-verktøyet slik veiledningen beskriver.
+</li>
+<li>Åpne <strong>ditt eget repository</strong> på GitHub, klikk <strong>Code → HTTPS</strong>, og kopier adressen. Bruk din kopi hvis du startet med malen.
+</li>
+<li>Åpne terminalen. Skriv <code>git clone</code>, et mellomrom og adressen du kopierte. Dette henter en lokal arbeidskopi med Git-tilkoblingen bevart. Eksempel:
+</li></ol>
+<div class="code-block"><pre><code>git clone https://github.com/DITT-BRUKERNAVN/mitt-laeringsverktoy.git
+cd mitt-laeringsverktoy</code></pre></div>
+<p>Bytt eksempeladressen med din egen. I <code>cd</code>-linjen bruker du navnet på mappen som ble opprettet. <code>cd</code> betyr at du går inn i mappen. Ikke bruk <strong>Download ZIP</strong> her; du trenger Git-tilkoblingen for commit og push.</p>
+<p><strong>Start AI-verktøyet i prosjektmappen:</strong></p>
+<p>Velg kommandoen for verktøyet du installerte:</p>
+<div class="table-wrap"><table><thead><tr><th scope="col">Verktøy</th><th scope="col">Skriv i terminalen</th></tr></thead><tbody><tr><td>Codex CLI</td><td><code>codex</code></td></tr><tr><td>Claude Code</td><td><code>claude</code></td></tr></tbody></table></div>
+<p>Deretter skriver du til AI-verktøyet omtrent som i en vanlig chat. Vil du ha terminalen inne i VS Code, åpner du prosjektmappen og velger <strong>Terminal → New Terminal</strong>. Kjør kommandoen der, med prosjektmappen som arbeidsmappe. For terminalvarianten må CLI-verktøyet være installert; en AI-utvidelse alene betyr ikke at <code>codex</code> eller <code>claude</code> er tilgjengelig som terminalkommando.</p>
+<p><strong>Felles for begge alternativer:</strong> Pålogging i AI-verktøyet gir ikke automatisk tilgang til GitHub. Første commit eller push kan kreve at du setter Git-navn og e-post og logger inn mot GitHub. Be verktøyet forklare hva som mangler, og følg påloggingen. Ikke lim passord eller tilgangsnøkler inn i samtalen.</p>
+<h3>C. Gi en konkret oppgave</h3>
+<p>Prøv med en liten endring først. Kopier prompten nedenfor inn i Codex eller Claude Code, i VS Code-panelet eller terminalen, og tilpass ønsket endring:</p>
+<div class="code-block"><pre><code>Jeg vil videreutvikle læringsverktøyet i dette GitHub-prosjektet.
+Les filene og eventuelle prosjektinstruksjoner først.
+
+Ønsket endring: Legg til fem nye matteoppgaver med korte forklaringer.
+
+- Bruk public/eksempel.html hvis prosjektet har guiden som forside.
+  Hvis bare verktøyet ligger i public/index.html, bruk den filen.
+- Behold guiden, navigasjonen og det responsive designet.
+- Bruk fortsatt bare HTML, CSS og JavaScript, uten eksterne avhengigheter.
+- Kontroller at oppgavene, svaralternativene, poeng og omstart virker.
+- Se over endringene og oppsummer hva du har endret og kontrollert.
+- Bruk eksisterende GitHub-tilkobling og produksjonsbranch. Avklar hvilken
+  branch Cloudflare bruker hvis det ikke fremgår av prosjektet.
+- Lag en beskrivende commit og push endringene dit. Ikke ta med andre
+  pågående endringer. Ikke overskriv historikk eller bruk force push.
+- Hvis du mangler tilgang eller en godkjenning, forklar konkret hva som trengs.</code></pre></div>
+<p>Verktøyet kan be deg godkjenne filendringer eller kommandoer. Les hva det vil gjøre. Når push er fullført til produksjonsbranchen, starter Cloudflare publisering automatisk. En commit alene publiserer ikke nettsiden; endringen må også sendes til GitHub med push.</p>
+<h3>D. Sjekk resultatet og fortsett</h3>
+<ol>
+<li>Se at den nye commiten finnes på GitHub, og at siste publisering under <strong>Deployments</strong> i Cloudflare har lykkes.
+</li>
+<li>Åpne quizens faste nettadresse og test endringen selv før du deler den med elevene.
+</li>
+<li>Neste gang åpner du samme prosjektmappe og AI-panelet i VS Code, eller starter AI-verktøyet i terminalen igjen. Har du også redigert på GitHub eller en annen datamaskin, ber du AI hente de siste endringene først og ta vare på eventuelt lokalt arbeid.
+</li></ol>
+<p>Du trenger ikke lære alle Git-kommandoene på én gang. Det viktigste er å vite hvor filene ligger, hva som blir endret, og at <strong>commit → push → Cloudflare</strong> er veien fra en lokal endring til den publiserte nettsiden.</p>
 </section>
         <div class="closing">
           <p>Oppsett og dokumentasjonslenker kontrollert 16. oktober 2026. Knappenavn og gratisgrenser kan endres.</p>
