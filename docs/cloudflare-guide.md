@@ -343,6 +343,7 @@ public/
   eksempel.html    (mattequizen)
   guide.css        (utseendet til guiden)
   guide.js         (kopieringsknapper)
+  favicon.svg      (ikon i nettleserfanen)
 ```
 
 Alt i **public** publiseres som nettside. Forsiden viser guiden, og knappen **Prøv mattequizen** åpner eksempelsiden. README og Markdown-utgaven av guiden kan også leses på GitHub. Starter du med et tomt repository, er `public/index.html` den eneste filen Cloudflare trenger for å publisere eksempelappen. Du trenger ingen installasjonsfiler, Docker eller GitHub Actions.
