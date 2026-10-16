@@ -4,6 +4,8 @@
 
 Du skal lage et lite læringsverktøy, legge koden på GitHub og publisere det med Cloudflare Pages. Til slutt har du en nettadresse du kan dele med elevene. Når du senere endrer koden på GitHub, publiserer Cloudflare den nye versjonen automatisk.
 
+**Denne malen har to sider:** `public/index.html` er guiden du kan publisere, og `public/eksempel.html` er mattequizen. Bruker du malen, beholder du guiden og redigerer eksempelappen. Starter du fra et tomt repository, kan du legge selve verktøyet i `public/index.html` slik steg 4 viser.
+
 Du trenger ingen forkunnskaper. Vi starter med en ferdig mattequiz, slik at du kan lære publiseringen før du ber AI lage ditt eget verktøy.
 
 > **Dette er løsningen:** AI hjelper deg med koden → GitHub oppbevarer filene → Cloudflare Pages gjør verktøyet tilgjengelig på nettet → Elevene åpner nettadressen.
@@ -30,6 +32,15 @@ Eksempelet heter **Mattepause**. Det har ti oppgaver i pluss, minus og gange. El
 | --- | --- | --- |
 | **GitHub** | Et sted der du lagrer kodefiler og historikken over endringene dine. | Opprett en prosjektmappe og legg inn koden. |
 | **Cloudflare Pages** | En tjeneste som publiserer filene som en nettside. | Koble til GitHub og velg hvilken mappe som skal publiseres. |
+
+### Slik henger Git, GitHub og Cloudflare sammen
+
+1. **AI lager kode.** Resultatet er tekst som beskriver innhold, utseende og funksjoner i verktøyet.
+2. **Du lagrer på GitHub.** Git er systemet som holder orden på versjonene av filene. GitHub er nettstedet der du kan se og redigere dem. **Commit changes** lagrer en ny versjon med en kort melding om hva du endret.
+3. **Cloudflare oppdager endringen.** Du kobler repositoryet til Pages én gang. Deretter henter Cloudflare automatisk filene fra den valgte branchen når du lagrer en endring.
+4. **Elevene åpner nettsiden.** Cloudflare publiserer innholdet i `public` på en fast nettadresse. Elevene bruker denne adressen, mens du arbeider i GitHub.
+
+GitHub-adressen viser prosjektet og filene. Cloudflare-adressen viser den ferdige nettsiden. Du kan endre filene mange ganger uten å endre adressen elevene bruker.
 
 En prosjektmappe på GitHub kalles et **repository**. Vi bruker dette navnet videre fordi det står på knappene i GitHub.
 
@@ -73,25 +84,20 @@ Da får du mattequizen og guiden ferdig lagt inn. Dette er valgfritt og erstatte
 3. Velg din egen konto under **Owner** og et navn, for eksempel `mitt-laeringsverktoy`.
 4. Velg **Private** eller **Public**. Du trenger ikke velge **Include all branches**.
 5. Klikk **Create repository from template**.
-6. Kontroller at din egen kopi inneholder **public → index.html**. Gå deretter til [steg 5](#steg-5).
+6. Kontroller at din egen kopi inneholder **public → index.html** (guiden) og **public → eksempel.html** (mattequizen). Gå deretter til [steg 5](#steg-5).
 
 Du kobler **din egen kopi** til Cloudflare. Oppdateringer i originalmalen blir ikke automatisk kopiert til prosjektet ditt.
-
-<details>
-<summary>For eieren av malen: Slik aktiverer du «Use this template»</summary>
-
-Du må ha administratorrettigheter. Åpne repositoryets **Settings → General**, og huk av **Template repository**. Innstillingen gjøres på GitHub; en fil i repositoryet kan ikke aktivere den. Alle som skal bruke malen må ha lesetilgang til repositoryet. Se [GitHubs dokumentasjon for template-repositoryer](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-template-repository).
-
-Hvis knappen mangler, kan du bruke alternativ A og kopiere eksempelappen i steg 4.
-
-</details>
 
 <a id="steg-4"></a>
 ## 4. Legg inn ditt første læringsverktøy
 
-### Kopier den ferdige mattequizen
+### Bruker du malen?
 
-1. Åpne [eksempelfilen public/index.html](../public/index.html). I originalrepositoryet finner du den også [her](https://github.com/Christergabba/edu-freehost/blob/main/public/index.html).
+Da er filene allerede på plass. Gå til [steg 5](#steg-5). Når du senere vil endre quizen, redigerer du **public → eksempel.html**. Behold **public → index.html** for å beholde guiden som forside.
+
+### Startet du med et tomt repository? Kopier mattequizen
+
+1. Åpne [eksempelfilen public/eksempel.html](../public/eksempel.html). I originalrepositoryet finner du den også [her](https://github.com/Christergabba/edu-freehost/blob/main/public/eksempel.html).
 2. Klikk **Copy raw file** hvis kopieringsknappen vises over koden. Ellers klikker du **Raw**, markerer hele teksten og kopierer den. Bruk **Ctrl+A**, deretter **Ctrl+C** (på Mac: **⌘A**, **⌘C**).
 3. Gå tilbake til **ditt eget** repository.
 4. Klikk **Add file → Create new file**. I et helt tomt repository kan lenken hete **creating a new file**.
@@ -101,7 +107,7 @@ Hvis knappen mangler, kan du bruke alternativ A og kopiere eksempelappen i steg 
    public/index.html
    ```
 
-6. Lim inn hele koden i det store redigeringsfeltet. Koden skal starte med `<!doctype html>` og slutte med `</html>`. Ikke ta med kodegjerder som ` ```html ` fra et AI-svar.
+6. Lim inn hele koden i det store redigeringsfeltet. Koden skal starte med `<!doctype html>` og slutte med `</html>`. Ikke ta med linjene med tre bakovervendte anførselstegn rundt koden fra et AI-svar.
 7. Klikk **Commit changes…**. Skriv for eksempel `Legg til mattequiz` i meldingsfeltet.
 8. Velg **Commit directly to the main branch** hvis valget vises, og bekreft med **Commit changes**. Bruk din standardbranch hvis den heter noe annet.
 
@@ -185,11 +191,11 @@ Oppsettet bygger på Cloudflares offisielle dokumentasjon: [Git-integrasjon og o
    ```
 
 3. Klikk på adressen. Bruk den adressen Cloudflare faktisk viser; eksempelet over er bare et eksempel.
-4. Svar på noen oppgaver. Prøv både et riktig og et feil svar, og fullfør quizen.
+4. Bruker du malen, åpner forsiden guiden. Klikk **Prøv mattequizen** for å gå til `/eksempel.html`. Har du bare lagt quizen i `public/index.html`, åpnes den direkte på forsiden. Svar på noen oppgaver. Prøv både et riktig og et feil svar, og fullfør quizen.
 5. Åpne samme adresse på mobilen. Kontroller at teksten er leselig og knappene enkle å trykke på.
-6. Kopier adressen og lim den inn i skolens læringsplattform, en melding eller en undervisningsplan.
+6. Del gjerne guiden med kolleger. Til elevene deler du **quizens adresse**, som slutter på `/eksempel.html` hvis du bruker malen. Kopier adressen og lim den inn i skolens læringsplattform, en melding eller en undervisningsplan.
 
-Elevene trenger vanligvis ingen konto og skal ikke logge inn på GitHub eller Cloudflare. Del den faste **Production**-adressen uten en tilfeldig versjonskode foran prosjektnavnet. Da får elevene nye versjoner på samme adresse. De kan måtte laste siden på nytt hvis den allerede står åpen.
+Elevene trenger vanligvis ingen konto og skal ikke logge inn på GitHub eller Cloudflare. Bruk den faste **Production**-adressen uten en tilfeldig versjonskode foran prosjektnavnet, og legg til `/eksempel.html` når du deler quizen fra malen. Da får elevene nye versjoner på samme adresse. De kan måtte laste siden på nytt hvis den allerede står åpen.
 
 > **Klar for klassen?** Test en hel runde, resultatet og **Prøv en gang til**. Prøv også å bruke Tab og Enter på tastaturet. Åpne gjerne adressen i et privat nettleservindu for å kontrollere tilgangen uten innlogging.
 
@@ -199,7 +205,7 @@ Elevene trenger vanligvis ingen konto og skal ikke logge inn på GitHub eller Cl
 Prøv først en liten endring, for eksempel å bytte overskriften.
 
 1. Åpne ditt repository på GitHub. Velg standardbranchen, for eksempel **main**.
-2. Åpne **public → index.html**.
+2. Åpne **public → eksempel.html** hvis du bruker malen. Startet du med et tomt repository og la quizen på forsiden, åpner du **public → index.html**.
 3. Klikk blyanten, **Edit this file**.
 4. Finn `En liten pause. Ti matteoppgaver.` og endre teksten. Behold HTML-taggene rundt teksten.
 5. Klikk **Commit changes…**, skriv for eksempel `Endre overskrift`, og lagre direkte til standardbranchen med **Commit changes**.
@@ -245,12 +251,12 @@ Jeg skal ikke installere noe eller bruke terminalen.
 ### Bytt ut eksempelappen
 
 1. Kopier hele HTML-koden fra AI-svaret. Bruk kopieringsknappen i kodeblokken hvis den finnes. Ikke kopier forklaringene eller linjene med tre bakovervendte anførselstegn rundt koden.
-2. Åpne **public → index.html → Edit this file** i ditt repository.
+2. Åpne **public → eksempel.html → Edit this file** hvis du bruker malen. Da beholder du guiden på forsiden. I et repository med bare verktøyet åpner du **public → index.html → Edit this file**.
 3. Klikk inne i kodefeltet, marker alt innhold og lim inn den nye koden. Ta gjerne vare på den gamle koden i et eget notat først. GitHub beholder også tidligere versjoner under **History**.
 4. Klikk **Commit changes** og lagre til standardbranchen.
 5. Vent til Cloudflare har publisert. Åpne nettadressen og test både faginnholdet og alle knappene før du deler verktøyet.
 
-Du trenger ikke endre Cloudflare-oppsettet så lenge filen fortsatt heter `public/index.html` og følger kravene i prompten. AI hjelper deg med å lage koden; elevene trenger ikke tilgang til AI-verktøyet for å bruke den ferdige nettsiden.
+Du trenger ikke endre Cloudflare-oppsettet så lenge filen fortsatt ligger i `public` og følger kravene i prompten. Navnet `index.html` i AI-svaret hindrer deg ikke i å lime koden inn i `eksempel.html`. Hvis du vil beholde navigasjonen i quizen, ber du AI ta med lenker til `./` (guiden) og GitHub-repositoryet. Du kan også alltid gå tilbake via nettleseren. AI hjelper deg med å lage koden; elevene trenger ikke tilgang til AI-verktøyet for å bruke den ferdige nettsiden.
 
 ### Ideer til neste verktøy
 
@@ -285,7 +291,7 @@ Start med ett verktøy per repository. Vil du beholde flere ulike verktøy samti
 
 ### Endringer vises ikke på nettsiden
 
-1. Åpne `public/index.html` på GitHub og kontroller at endringen faktisk er lagret.
+1. Åpne filen du endret på GitHub (`public/eksempel.html` for quizen i malen), og kontroller at endringen faktisk er lagret.
 2. Kontroller at du lagret på samme branch som Cloudflares **Production branch**.
 3. Se under **Deployments** at den nyeste endringen har en vellykket publisering. Hvis ikke, les neste punkt.
 4. Åpne den faste produksjonsadressen, ikke en gammel forhåndsvisningsadresse. Last siden på nytt, eller prøv et privat nettleservindu.
@@ -310,7 +316,7 @@ viewport-meta-tag, fleksible bredder, leselig tekst og store knapper.
 Unngå vannrett rulling ved 320 pikslers skjermbredde. Returner hele den
 oppdaterte filen med HTML, CSS og JavaScript uten eksterne avhengigheter.
 Her er koden min:
-[Lim inn innholdet fra public/index.html]
+[Lim inn innholdet fra public/eksempel.html, eller public/index.html hvis verktøyet ligger der]
 ```
 
 Erstatt koden på GitHub, lagre og test på nytt etter publisering. En vellykket deployment bekrefter at filene er publisert; du må fortsatt teste at innhold og funksjoner virker.
@@ -333,10 +339,13 @@ README.md
 docs/
   cloudflare-guide.md
 public/
-  index.html
+  index.html       (guiden som nettside)
+  eksempel.html    (mattequizen)
+  guide.css        (utseendet til guiden)
+  guide.js         (kopieringsknapper)
 ```
 
-Bare innholdet i **public** publiseres som nettside. README og denne guiden leses på GitHub. Starter du med et tomt repository, er `public/index.html` den eneste filen Cloudflare trenger for å publisere eksempelappen. Du trenger ingen installasjonsfiler, Docker eller GitHub Actions.
+Alt i **public** publiseres som nettside. Forsiden viser guiden, og knappen **Prøv mattequizen** åpner eksempelsiden. README og Markdown-utgaven av guiden kan også leses på GitHub. Starter du med et tomt repository, er `public/index.html` den eneste filen Cloudflare trenger for å publisere eksempelappen. Du trenger ingen installasjonsfiler, Docker eller GitHub Actions.
 
 </details>
 

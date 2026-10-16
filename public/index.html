@@ -3,159 +3,392 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Øv på pluss, minus og gange med en gratis mattequiz. Ti oppgaver med forklaring og umiddelbar tilbakemelding.">
-  <title>Mattepause – en liten mattequiz</title>
-  <style>
-    :root {
-      color-scheme: light;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      color: #182c38;
-      background: #f1f6f5;
-      line-height: 1.6;
-    }
-    * { box-sizing: border-box; }
-    body { margin: 0; padding: 32px 16px; }
-    main { width: 100%; max-width: 640px; margin: 0 auto; }
-    .brand { margin: 0; color: #176454; font-weight: 800; letter-spacing: .06em; }
-    h1 { font-size: clamp(2rem, 6vw, 3rem); line-height: 1.15; margin: 12px 0; }
-    .intro { color: #485e69; margin: 0 0 28px; }
-    .card { background: #fff; padding: clamp(20px, 5vw, 36px); border: 1px solid #d6e4e0; border-radius: 24px; box-shadow: 0 12px 36px #183c3010; }
-    .meta { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; font-size: .9rem; font-weight: 600; }
-    progress { display: block; width: 100%; height: 10px; margin: 16px 0 28px; accent-color: #176454; }
-    .label { color: #485e69; margin: 0; }
-    h2 { font-size: clamp(2rem, 8vw, 3rem); line-height: 1.2; margin: 12px 0 24px; }
-    .answers { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
-    button { font: inherit; cursor: pointer; min-height: 52px; border-radius: 12px; }
-    .answer { border: 2px solid #d6e4e0; background: #f7faf9; color: #182c38; font-size: 1.4rem; font-weight: 700; padding: 14px; }
-    .answer:hover:not(:disabled) { border-color: #176454; background: #eaf4f0; }
-    button:focus-visible { outline: 3px solid #2649bb; outline-offset: 4px; }
-    .answer:disabled { cursor: default; opacity: 1; }
-    .answer.correct { background: #e5f4e9; border-color: #237344; color: #17502e; }
-    .answer.wrong { background: #fff0ed; border-color: #ac3a2a; color: #872c20; }
-    .feedback { min-height: 5em; margin: 20px 0 12px; }
-    .feedback[data-result="correct"] { color: #17502e; }
-    .feedback[data-result="wrong"] { color: #872c20; }
-    .primary { width: 100%; border: 0; background: #176454; color: #fff; padding: 12px 20px; font-weight: 700; }
-    .primary:hover { background: #104c40; }
-    .summary { font-size: 1.15rem; margin-bottom: 28px; }
-    footer { text-align: center; color: #485e69; font-size: .85rem; margin-top: 24px; }
-    [hidden] { display: none !important; }
-    @media (max-width: 360px) { body { padding: 20px 12px; } .card { padding: 18px; } }
-  </style>
+  <meta name="description" content="Fra AI-idé til en nettadresse elevene kan bruke. En praktisk guide til gratis publisering med GitHub og Cloudflare Pages, med en mattequiz du kan prøve.">
+  <title>Fra idé til læringsverktøy – GitHub og Cloudflare for lærere</title>
+  <link rel="stylesheet" href="guide.css">
+  <script src="guide.js" defer></script>
 </head>
-<body>
+<body id="toppen">
+  <a class="skip" href="#veiledning">Hopp til guiden</a>
+  <header class="site-header">
+    <div class="topbar">
+      <a class="wordmark" href="./" aria-current="page">Fra idé til læringsverktøy</a>
+      <nav aria-label="Hovedmeny">
+        <a href="#steg-1">Guiden</a>
+        <a href="eksempel.html">Prøv mattequizen</a>
+        <a href="https://github.com/Christergabba/edu-freehost">Prosjektet på GitHub ↗</a>
+      </nav>
+    </div>
+  </header>
   <main>
-    <header>
-      <p class="brand">MATTEPAUSE</p>
-      <h1>En liten pause. Ti matteoppgaver.</h1>
-      <p class="intro">Øv på pluss, minus og gange i ditt eget tempo. Velg ett svar og lær underveis.</p>
-    </header>
-    <section class="card" aria-label="Mattequiz">
-      <div id="quiz">
-        <div class="meta"><span id="counter"></span><span id="score"></span></div>
-        <progress id="progress" value="0" max="10" aria-label="Antall besvarte oppgaver"></progress>
-        <p class="label">Hva blir svaret?</p>
-        <h2 id="question" tabindex="-1"></h2>
-        <div id="answers" class="answers" role="group" aria-labelledby="question"></div>
-        <p id="feedback" class="feedback" role="status" aria-live="polite" aria-atomic="true"></p>
-        <button id="next" class="primary" type="button" hidden>Neste oppgave →</button>
+    <div class="hero">
+      <p class="eyebrow">For lærere · Alt i nettleseren</p>
+      <h1>En god idé fortjener<br>å bli brukt i klasserommet.</h1>
+      <p class="lead">La AI hjelpe deg å lage et lite læringsverktøy. Her lærer du å publisere det gratis med GitHub og Cloudflare Pages, og dele det med elevene på en vanlig nettadresse.</p>
+      <div class="actions">
+        <a class="button primary" href="#steg-1">Start med guiden ↓</a>
+        <a class="button" href="eksempel.html">Prøv mattequizen →</a>
       </div>
-      <div id="result" hidden>
-        <p class="label">Alle oppgavene er besvart</p>
-        <h2 id="result-title" tabindex="-1">Godt jobbet!</h2>
-        <p id="summary" class="summary"></p>
-        <button id="restart" class="primary" type="button">Prøv en gang til</button>
-      </div>
-      <noscript>Du må aktivere JavaScript i nettleseren for å bruke quizen.</noscript>
-    </section>
-    <footer>Ingen innlogging. Svarene lagres ikke. En ny runde starter når du laster siden på nytt.</footer>
+      <p>Ingen forkunnskaper, terminal eller installasjon. Du får et ferdig eksempel og en prompt du kan bruke til din egen idé.</p>
+      <ol class="flow" aria-label="Fra idé til publisert læringsverktøy">
+        <li><small>01 · LAG</small><strong>AI skriver koden</strong><span>Du beskriver hva elevene skal lære.</span></li>
+        <li><small>02 · LAGRE</small><strong>GitHub tar vare på filene</strong><span>Du redigerer og lagrer nye versjoner.</span></li>
+        <li><small>03 · PUBLISER</small><strong>Cloudflare viser nettsiden</strong><span>Nye versjoner publiseres automatisk.</span></li>
+        <li><small>04 · DEL</small><strong>Elevene åpner lenken</strong><span>Verktøyet brukes rett i nettleseren.</span></li>
+      </ol>
+    </div>
+    <div class="layout">
+      <aside class="sidebar">
+        <nav aria-label="Innhold i guiden">
+          <h2>Steg for steg</h2>
+          <ol><li><a href="#steg-1">1. Forstå sammenhengen</a></li>
+<li><a href="#steg-2">2. Dette trenger du</a></li>
+<li><a href="#steg-3">3. Opprett et repository</a></li>
+<li><a href="#steg-4">4. Legg inn mattequizen</a></li>
+<li><a href="#steg-5">5. Publiser med Cloudflare</a></li>
+<li><a href="#steg-6">6. Åpne og del</a></li>
+<li><a href="#steg-7">7. Oppdater verktøyet</a></li>
+<li><a href="#steg-8">8. Lag noe nytt med AI</a></li>
+<li><a href="#steg-9">9. Feilsøking</a></li>
+<li><a href="#steg-10">10. Personvern og sikkerhet</a></li></ol>
+        </nav>
+        <p class="aside-note">Vil du se resultatet først?<br><a href="eksempel.html">Åpne eksempelappen →</a></p>
+      </aside>
+      <article id="veiledning" aria-label="Komplett publiseringsguide">
+        <section class="chapter" aria-labelledby="to-sider">
+          <h2 id="to-sider">Én mal. En guide og et verktøy.</h2>
+          <p>Denne nettsiden er selv et eksempel på det du skal lære: filene ligger på <a href="https://github.com/Christergabba/edu-freehost">GitHub</a>, og kan publiseres med Cloudflare Pages.</p>
+          <p>Bruker du <strong>Use this template</strong>, får du både guiden som forside og <a href="eksempel.html">mattequizen på en egen side</a>. Behold guiden som oppslagsverk, og endre eksempelappen til ditt eget læringsverktøy.</p>
+          <p>Starter du med et tomt repository, viser steg 4 hvordan du legger bare verktøyet på forsiden. Begge alternativene bruker de samme Cloudflare-innstillingene.</p>
+          <blockquote><p><strong>To adresser, to oppgaver:</strong> GitHub-adressen er der du arbeider med filene. Cloudflare-adressen er nettsiden du deler med kolleger og elever.</p></blockquote>
+        </section>
+<section class="chapter" id="steg-1">
+<h2>1. Hva skal du lage?</h2>
+<p>Eksempelet heter <strong>Mattepause</strong>. Det har ti oppgaver i pluss, minus og gange. Eleven velger blant fire svar, får vite om svaret er riktig og ser en kort forklaring. Etter siste oppgave vises resultatet. Quizen er laget for mobil, nettbrett og PC.</p>
+<div class="table-wrap"><table><thead><tr><th scope="col">Tjeneste</th><th scope="col">En enkel forklaring</th><th scope="col">Din oppgave</th></tr></thead><tbody><tr><td><strong>GitHub</strong></td><td>Et sted der du lagrer kodefiler og historikken over endringene dine.</td><td>Opprett en prosjektmappe og legg inn koden.</td></tr><tr><td><strong>Cloudflare Pages</strong></td><td>En tjeneste som publiserer filene som en nettside.</td><td>Koble til GitHub og velg hvilken mappe som skal publiseres.</td></tr></tbody></table></div>
+<h3>Slik henger Git, GitHub og Cloudflare sammen</h3>
+<ol>
+<li><strong>AI lager kode.</strong> Resultatet er tekst som beskriver innhold, utseende og funksjoner i verktøyet.
+</li>
+<li><strong>Du lagrer på GitHub.</strong> Git er systemet som holder orden på versjonene av filene. GitHub er nettstedet der du kan se og redigere dem. <strong>Commit changes</strong> lagrer en ny versjon med en kort melding om hva du endret.
+</li>
+<li><strong>Cloudflare oppdager endringen.</strong> Du kobler repositoryet til Pages én gang. Deretter henter Cloudflare automatisk filene fra den valgte branchen når du lagrer en endring.
+</li>
+<li><strong>Elevene åpner nettsiden.</strong> Cloudflare publiserer innholdet i <code>public</code> på en fast nettadresse. Elevene bruker denne adressen, mens du arbeider i GitHub.
+</li></ol>
+<p>GitHub-adressen viser prosjektet og filene. Cloudflare-adressen viser den ferdige nettsiden. Du kan endre filene mange ganger uten å endre adressen elevene bruker.</p>
+<p>En prosjektmappe på GitHub kalles et <strong>repository</strong>. Vi bruker dette navnet videre fordi det står på knappene i GitHub.</p>
+<p>Du bruker gratisnivået og en adresse som slutter på <code>pages.dev</code>. Du trenger ikke kjøpe et domene. Gratisnivået har bruksgrenser; blant annet tillater det for tiden 500 bygg/publiseringer i måneden. Se <a href="https://developers.cloudflare.com/pages/platform/limits/">Cloudflares gjeldende grenser</a>.</p>
+</section>
+<section class="chapter" id="steg-2">
+<h2>2. Dette trenger du</h2>
+<ul>
+<li><strong>Gratis GitHub-konto:</strong> <a href="https://github.com/signup">Registrer deg på GitHub</a>. Følg registreringen og bekreft e-postadressen hvis du blir bedt om det.
+</li>
+<li><strong>Gratis Cloudflare-konto:</strong> <a href="https://dash.cloudflare.com/sign-up">Registrer deg hos Cloudflare</a>. Bekreft e-postadressen og logg inn. Velg gratisnivået dersom du blir spurt. Du trenger ikke legge til eller kjøpe et domene.
+</li>
+<li><strong>Et AI-verktøy som kan lage kode:</strong> Bruk for eksempel ChatGPT, Claude eller et annet verktøy du har tilgang til. Du trenger ikke AI for å publisere den ferdige eksempelquizen.
+</li></ul>
+<p>Ha gjerne GitHub og Cloudflare åpne i hver sin fane.</p>
+</section>
+<section class="chapter" id="steg-3">
+<h2>3. Opprett et repository</h2>
+<p><strong>Har du allerede et eget repository?</strong> Bruk det og gå videre til <a href="#steg-4">steg 4</a>. Ikke erstatt filer du trenger fra før.</p>
+<h3>Alternativ A: Start med et tomt repository</h3>
+<ol>
+<li>Logg inn på <a href="https://github.com/">github.com</a>.
+</li>
+<li>Klikk <strong>+ → New repository</strong> øverst. Du kan også åpne <a href="https://github.com/new">opprettingssiden direkte</a>.
+</li>
+<li>Under <strong>Owner</strong> velger du din egen konto.
+</li>
+<li>Skriv et navn under <strong>Repository name</strong>, for eksempel <code>mitt-laeringsverktoy</code>. Bruk gjerne små bokstaver og bindestreker, uten mellomrom, æ, ø og å.
+</li>
+<li>Velg <strong>Private</strong> eller <strong>Public</strong>:
+<ul>
+<li><strong>Private:</strong> Bare du og personer du gir tilgang til kan åpne repositoryet.
+</li>
+<li><strong>Public:</strong> Alle kan se repositoryet og kildekoden der.
+</li></ul>
+</li>
+<li>Slå på <strong>Add a README file</strong>. Det gir prosjektet en første fil og gjør standardbranchen klar. En <em>branch</em> er en versjonslinje for filene; du bruker bare standardbranchen i denne guiden.
+</li>
+<li>La øvrige valg stå som de er, og klikk <strong>Create repository</strong>.
+</li></ol>
+<blockquote><p><strong>Privat kodeprosjekt, offentlig nettside:</strong> Cloudflare Pages støtter både private og offentlige repositoryer. Selv om repositoryet er privat, blir nettsiden offentlig i dette oppsettet. HTML, CSS og JavaScript som sendes til nettleseren kan også leses av besøkende. Privat repository skjuler ikke hemmeligheter i nettsidekoden. Se <a href="https://developers.cloudflare.com/pages/get-started/git-integration/">Cloudflares veiledning om Git-integrasjon</a>.</p></blockquote>
+<a id="template"></a>
+<h3>Alternativ B: Bruk den ferdige malen</h3>
+<p>Da får du mattequizen og guiden ferdig lagt inn. Dette er valgfritt og erstatter alternativ A.</p>
+<ol>
+<li>Åpne <a href="https://github.com/Christergabba/edu-freehost">edu-freehost på GitHub</a>.
+</li>
+<li>Klikk <strong>Use this template → Create a new repository</strong> over fillisten.
+</li>
+<li>Velg din egen konto under <strong>Owner</strong> og et navn, for eksempel <code>mitt-laeringsverktoy</code>.
+</li>
+<li>Velg <strong>Private</strong> eller <strong>Public</strong>. Du trenger ikke velge <strong>Include all branches</strong>.
+</li>
+<li>Klikk <strong>Create repository from template</strong>.
+</li>
+<li>Kontroller at din egen kopi inneholder <strong>public → index.html</strong> (guiden) og <strong>public → eksempel.html</strong> (mattequizen). Gå deretter til <a href="#steg-5">steg 5</a>.
+</li></ol>
+<p>Du kobler <strong>din egen kopi</strong> til Cloudflare. Oppdateringer i originalmalen blir ikke automatisk kopiert til prosjektet ditt.</p>
+</section>
+<section class="chapter" id="steg-4">
+<h2>4. Legg inn ditt første læringsverktøy</h2>
+<h3>Bruker du malen?</h3>
+<p>Da er filene allerede på plass. Gå til <a href="#steg-5">steg 5</a>. Når du senere vil endre quizen, redigerer du <strong>public → eksempel.html</strong>. Behold <strong>public → index.html</strong> for å beholde guiden som forside.</p>
+<h3>Startet du med et tomt repository? Kopier mattequizen</h3>
+<ol>
+<li>Åpne <a href="https://github.com/Christergabba/edu-freehost/blob/main/public/eksempel.html">eksempelfilen public/eksempel.html</a>. I originalrepositoryet finner du den også <a href="https://github.com/Christergabba/edu-freehost/blob/main/public/eksempel.html">her</a>.
+</li>
+<li>Klikk <strong>Copy raw file</strong> hvis kopieringsknappen vises over koden. Ellers klikker du <strong>Raw</strong>, markerer hele teksten og kopierer den. Bruk <strong>Ctrl+A</strong>, deretter <strong>Ctrl+C</strong> (på Mac: <strong>⌘A</strong>, <strong>⌘C</strong>).
+</li>
+<li>Gå tilbake til <strong>ditt eget</strong> repository.
+</li>
+<li>Klikk <strong>Add file → Create new file</strong>. I et helt tomt repository kan lenken hete <strong>creating a new file</strong>.
+</li>
+<li>Skriv følgende i feltet for filnavn:
+</li></ol>
+<div class="code-block"><pre><code>public/index.html</code></pre></div>
+<ol start="6">
+<li>Lim inn hele koden i det store redigeringsfeltet. Koden skal starte med <code>&lt;!doctype html&gt;</code> og slutte med <code>&lt;/html&gt;</code>. Ikke ta med linjene med tre bakovervendte anførselstegn rundt koden fra et AI-svar.
+</li>
+<li>Klikk <strong>Commit changes…</strong>. Skriv for eksempel <code>Legg til mattequiz</code> i meldingsfeltet.
+</li>
+<li>Velg <strong>Commit directly to the main branch</strong> hvis valget vises, og bekreft med <strong>Commit changes</strong>. Bruk din standardbranch hvis den heter noe annet.
+</li></ol>
+<p><strong>Commit changes</strong> betyr at du lagrer en ny versjon på GitHub. Du skal nå se mappen <strong>public</strong> og filen <strong>index.html</strong> i den.</p>
+<blockquote><p><strong>Hvis filen allerede finnes:</strong> Åpne <strong>public → index.html</strong>, klikk blyanten (<strong>Edit this file</strong>) og rediger den. Du skal ikke opprette en ny fil med samme navn.</p></blockquote>
+<h3>Hva ligger i filen?</h3>
+<p>All koden er samlet i én fil: HTML gir siden innhold, CSS bestemmer utseendet, og JavaScript får svaralternativene til å virke. Du trenger ingen andre filer, rammeverk, backend, database eller eksterne kodepakker. En <em>backend</em> er et eget program på en server; denne quizen kjører bare i nettleseren.</p>
+<p>Oppgavene ligger samlet etter kommentaren <strong>Endre oppgavene her</strong>. Én oppgave ser slik ut:</p>
+<div class="code-block"><pre><code>{ text: &quot;7 + 5&quot;, answer: 12, options: [10, 11, 12, 13], explanation: &quot;7 + 3 blir 10. Legg til 2 til, så får du 12.&quot; }</code></pre></div>
+<p><code>text</code> er regnestykket, <code>answer</code> er riktig svar, <code>options</code> er svaralternativene og <code>explanation</code> er forklaringen eleven får. Riktig svar må stå nøyaktig én gang blant alternativene. Be gjerne AI hjelpe deg med endringer. Hele eksempelappen finnes i filen du nettopp kopierte.</p>
+<p><strong>Merk:</strong> GitHub viser koden når du åpner HTML-filen der. Den spillbare quizen åpner du via Cloudflare-adressen etter neste steg.</p>
+</section>
+<section class="chapter" id="steg-5">
+<h2>5. Publiser med Cloudflare Pages</h2>
+<h3>A. Finn Pages</h3>
+<ol>
+<li>Logg inn på <a href="https://dash.cloudflare.com/">Cloudflare Dashboard</a>. Har du ikke konto, følger du registreringslenken i <a href="#steg-2">steg 2</a>.
+</li>
+<li>Velg kontoen din hvis du blir bedt om det.
+</li>
+<li>Åpne <strong>Workers &amp; Pages</strong> i menyen.
+</li>
+<li>Klikk <strong>Create application</strong> eller tilsvarende opprettingsknapp.
+</li>
+<li>Velg <strong>Pages</strong>, og deretter <strong>Connect to Git</strong> eller <strong>Import an existing Git repository</strong>.
+</li></ol>
+<blockquote><p><strong>Se etter Pages:</strong> Cloudflare endrer av og til knappenavn og plassering. Pages-valget kan ligge i en egen fane eller bak en lenke som <strong>Looking to deploy Pages?</strong>. Du skal ende på oppsett for <strong>Pages med Git-integrasjon</strong>. Hvis skjemaet krever en <strong>Deploy command</strong> som <code>wrangler deploy</code>, har du trolig valgt Workers. Gå tilbake og finn Pages.</p></blockquote>
+<h3>B. Gi tilgang til GitHub</h3>
+<ol>
+<li>Velg <strong>GitHub</strong>, og logg inn hvis du blir bedt om det.
+</li>
+<li>Godkjenn Cloudflares GitHub-app. Navnet kan være <strong>Cloudflare Workers and Pages</strong>.
+</li>
+<li>Velg <strong>Only select repositories</strong>, og velg ditt eget repository, for eksempel <code>mitt-laeringsverktoy</code>.
+</li>
+<li>Klikk <strong>Install &amp; Authorize</strong>, <strong>Install</strong> eller tilsvarende godkjenningsknapp.
+</li>
+<li>Tilbake i Cloudflare velger du riktig GitHub-konto og repository. Klikk <strong>Begin setup</strong>.
+</li></ol>
+<p>Tilgangen lar Cloudflare hente filene og oppdage endringer. Hvis du bruker skolens GitHub-organisasjon, kan en administrator måtte godkjenne tilgangen.</p>
+<h3>C. Fyll inn disse innstillingene</h3>
+<p>Gi <strong>Project name</strong> et ledig navn, for eksempel <code>mitt-laeringsverktoy</code>. Dette blir en del av nettadressen.</p>
+<div class="table-wrap"><table><thead><tr><th scope="col">Felt i Cloudflare</th><th scope="col">Skriv eller velg</th><th scope="col">Hva betyr det?</th></tr></thead><tbody><tr><td><strong>Production branch</strong></td><td><strong><code>main</code></strong></td><td>Versjonslinjen Cloudflare skal hente den delte nettsiden fra.</td></tr><tr><td><strong>Framework preset</strong></td><td><strong><code>None</code></strong></td><td>Verktøyet bruker vanlig HTML, CSS og JavaScript.</td></tr><tr><td><strong>Build command</strong></td><td><strong><code>exit 0</code></strong></td><td>Forteller Cloudflare at filene er klare uten et eget byggesteg.</td></tr><tr><td><strong>Build output directory</strong></td><td><strong><code>public</code></strong></td><td>Mappen som inneholder nettsiden Cloudflare skal publisere.</td></tr><tr><td><strong>Root directory (advanced)</strong></td><td><strong>La feltet stå tomt</strong></td><td>Oppsettet starter i repositoryets øverste mappe.</td></tr></tbody></table></div>
+<p><strong>Branchen må stemme:</strong> <code>main</code> er eksempelet. Hvis standardbranchen din heter <code>master</code> eller noe annet, velger du det navnet. Du ser branchnavnet i menyen over fillisten på GitHub. Hvis ingen branch kan velges, lagrer du først <code>public/index.html</code> med <strong>Commit changes</strong> på GitHub og prøver igjen.</p>
+<p>Skriv bare <code>public</code> i <strong>Build output directory</strong>. Ikke skriv <code>public/index.html</code>, og ikke sett <strong>Root directory</strong> til <code>public</code> i dette oppsettet. Du trenger ingen <strong>Environment variables</strong>.</p>
+<blockquote><p>Du limer <code>exit 0</code> inn i et felt hos Cloudflare. Du skal ikke åpne noen terminal eller kjøre kommandoen på datamaskinen din.</p></blockquote>
+<h3>D. Publiser</h3>
+<ol>
+<li>Klikk <strong>Save and Deploy</strong>.
+</li>
+<li>Vent til publiseringen er ferdig. <em>Deployment</em> betyr at en versjon av nettsiden publiseres. Du kan se fremdriften i <strong>Deployments</strong>.
+</li>
+<li>Når du ser en vellykket status, for eksempel <strong>Success</strong>, klikker du <strong>Continue to project</strong> eller åpner prosjektoversikten.
+</li></ol>
+<p><strong>Ingen GitHub Actions er nødvendig.</strong> Du skal ikke aktivere GitHub Pages eller legge til noen arbeidsflytfil på GitHub. Cloudflare Pages håndterer publiseringen med den innebygde integrasjonen.</p>
+<p>Oppsettet bygger på Cloudflares offisielle dokumentasjon: <a href="https://developers.cloudflare.com/pages/get-started/git-integration/">Git-integrasjon og oppretting av Pages-prosjekt</a>, <a href="https://developers.cloudflare.com/pages/framework-guides/deploy-anything/">publisering av vanlig HTML</a> og <a href="https://developers.cloudflare.com/pages/configuration/build-configuration/">build-innstillinger</a>. Veiledningen for vanlig HTML beskriver <code>exit 0</code>; vi bruker dette konsekvent her. Du kan hoppe over terminalinstruksjonene i dokumentasjonen, siden du allerede har lagt inn filene gjennom GitHub.</p>
+</section>
+<section class="chapter" id="steg-6">
+<h2>6. Åpne og del nettsiden</h2>
+<ol>
+<li>Åpne Pages-prosjektet ditt i Cloudflare.
+</li>
+<li>Finn <strong>Production</strong>-adressen i prosjektoversikten eller under <strong>Deployments</strong>. Den ser for eksempel slik ut:
+</li></ol>
+<div class="code-block"><pre><code>https://mitt-laeringsverktoy.pages.dev</code></pre></div>
+<ol start="3">
+<li>Klikk på adressen. Bruk den adressen Cloudflare faktisk viser; eksempelet over er bare et eksempel.
+</li>
+<li>Bruker du malen, åpner forsiden guiden. Klikk <strong>Prøv mattequizen</strong> for å gå til <code>/eksempel.html</code>. Har du bare lagt quizen i <code>public/index.html</code>, åpnes den direkte på forsiden. Svar på noen oppgaver. Prøv både et riktig og et feil svar, og fullfør quizen.
+</li>
+<li>Åpne samme adresse på mobilen. Kontroller at teksten er leselig og knappene enkle å trykke på.
+</li>
+<li>Del gjerne guiden med kolleger. Til elevene deler du <strong>quizens adresse</strong>, som slutter på <code>/eksempel.html</code> hvis du bruker malen. Kopier adressen og lim den inn i skolens læringsplattform, en melding eller en undervisningsplan.
+</li></ol>
+<p>Elevene trenger vanligvis ingen konto og skal ikke logge inn på GitHub eller Cloudflare. Bruk den faste <strong>Production</strong>-adressen uten en tilfeldig versjonskode foran prosjektnavnet, og legg til <code>/eksempel.html</code> når du deler quizen fra malen. Da får elevene nye versjoner på samme adresse. De kan måtte laste siden på nytt hvis den allerede står åpen.</p>
+<blockquote><p><strong>Klar for klassen?</strong> Test en hel runde, resultatet og <strong>Prøv en gang til</strong>. Prøv også å bruke Tab og Enter på tastaturet. Åpne gjerne adressen i et privat nettleservindu for å kontrollere tilgangen uten innlogging.</p></blockquote>
+</section>
+<section class="chapter" id="steg-7">
+<h2>7. Oppdater læringsverktøyet</h2>
+<p>Prøv først en liten endring, for eksempel å bytte overskriften.</p>
+<ol>
+<li>Åpne ditt repository på GitHub. Velg standardbranchen, for eksempel <strong>main</strong>.
+</li>
+<li>Åpne <strong>public → eksempel.html</strong> hvis du bruker malen. Startet du med et tomt repository og la quizen på forsiden, åpner du <strong>public → index.html</strong>.
+</li>
+<li>Klikk blyanten, <strong>Edit this file</strong>.
+</li>
+<li>Finn <code>En liten pause. Ti matteoppgaver.</code> og endre teksten. Behold HTML-taggene rundt teksten.
+</li>
+<li>Klikk <strong>Commit changes…</strong>, skriv for eksempel <code>Endre overskrift</code>, og lagre direkte til standardbranchen med <strong>Commit changes</strong>.
+</li>
+<li>Åpne Cloudflare-prosjektets <strong>Deployments</strong>. En ny publisering skal starte automatisk.
+</li>
+<li>Når den er vellykket, åpner du den faste nettadressen og laster siden på nytt.
+</li></ol>
+<p><strong>Etter første oppsett trenger du bare å endre koden i GitHub.</strong> Cloudflare publiserer automatisk når du lagrer til den valgte produksjonsbranchen. Du trenger ingen manuell deployment, ny tilkobling eller ny nettadresse.</p>
+</section>
+<section class="chapter" id="steg-8">
+<h2>8. Lag nye læringsverktøy med AI</h2>
+<p>Velg et fag, et trinn og ett tydelig læringsmål. Kopier prompten nedenfor til AI-verktøyet ditt og erstatt feltene i hakeparenteser.</p>
+<h3>Kopier denne prompten</h3>
+<div class="code-block"><pre><code>Lag et enkelt, pedagogisk læringsverktøy på norsk bokmål.
+
+Fag og tema: [for eksempel matematikk – gangetabellen]
+Målgruppe: [for eksempel 4. trinn]
+Læringsmål: [hva eleven skal øve på]
+Ønsket aktivitet: [for eksempel ti oppgaver med fire svaralternativer]
+
+Krav:
+- Bruk kun HTML, CSS og vanlig JavaScript.
+- Samle all kode, inkludert CSS og JavaScript, i én komplett index.html-fil.
+- Ikke bruk backend, database, innlogging, API-er, npm-pakker, rammeverk,
+  eksterne biblioteker, skrifttyper eller andre eksterne avhengigheter.
+- Verktøyet skal kjøre direkte i nettleseren på Cloudflare Pages.
+- Lag et ryddig, responsivt og brukervennlig grensesnitt for mobil,
+  nettbrett og PC. Ta med viewport-meta-taggen.
+- Bruk store knapper, god kontrast, synlig tastaturfokus og tydelige tekster.
+- Gi eleven umiddelbar tilbakemelding og en kort faglig forklaring.
+- La eleven starte på nytt. Unngå tidspress.
+- Ikke be om eller lagre personopplysninger eller elevsvar.
+- Bruk lang=&quot;nb&quot; og UTF-8. Kommenter hvor jeg enkelt kan endre oppgavene.
+
+Returner komplett kode i én HTML-kodeblokk, uten utelatelser eller plassholdere
+i koden. Koden skal kunne kopieres direkte til public/index.html på GitHub.
+Jeg skal ikke installere noe eller bruke terminalen.</code></pre></div>
+<h3>Bytt ut eksempelappen</h3>
+<ol>
+<li>Kopier hele HTML-koden fra AI-svaret. Bruk kopieringsknappen i kodeblokken hvis den finnes. Ikke kopier forklaringene eller linjene med tre bakovervendte anførselstegn rundt koden.
+</li>
+<li>Åpne <strong>public → eksempel.html → Edit this file</strong> hvis du bruker malen. Da beholder du guiden på forsiden. I et repository med bare verktøyet åpner du <strong>public → index.html → Edit this file</strong>.
+</li>
+<li>Klikk inne i kodefeltet, marker alt innhold og lim inn den nye koden. Ta gjerne vare på den gamle koden i et eget notat først. GitHub beholder også tidligere versjoner under <strong>History</strong>.
+</li>
+<li>Klikk <strong>Commit changes</strong> og lagre til standardbranchen.
+</li>
+<li>Vent til Cloudflare har publisert. Åpne nettadressen og test både faginnholdet og alle knappene før du deler verktøyet.
+</li></ol>
+<p>Du trenger ikke endre Cloudflare-oppsettet så lenge filen fortsatt ligger i <code>public</code> og følger kravene i prompten. Navnet <code>index.html</code> i AI-svaret hindrer deg ikke i å lime koden inn i <code>eksempel.html</code>. Hvis du vil beholde navigasjonen i quizen, ber du AI ta med lenker til <code>./</code> (guiden) og GitHub-repositoryet. Du kan også alltid gå tilbake via nettleseren. AI hjelper deg med å lage koden; elevene trenger ikke tilgang til AI-verktøyet for å bruke den ferdige nettsiden.</p>
+<h3>Ideer til neste verktøy</h3>
+<div class="table-wrap"><table><thead><tr><th scope="col">Verktøy</th><th scope="col">Eksempel på aktivitet</th></tr></thead><tbody><tr><td>Mattequiz</td><td>Øv på brøk med svaralternativer og forklaringer.</td></tr><tr><td>Glosetrening</td><td>Snu glosekort og velg riktig oversettelse.</td></tr><tr><td>Geografiquiz</td><td>Koble land og hovedsteder.</td></tr><tr><td>Interaktiv tidslinje</td><td>Trykk på årstall og les om historiske hendelser.</td></tr><tr><td>Naturfagsoppgaver</td><td>Sorter dyr etter dyregruppe med knapper.</td></tr><tr><td>Enkle pedagogiske spill</td><td>Finn par mellom begreper og forklaringer.</td></tr></tbody></table></div>
+<p>Start med ett verktøy per repository. Vil du beholde flere ulike verktøy samtidig, kan du bruke malen til et nytt repository for hvert verktøy og koble hvert av dem til sitt eget Pages-prosjekt.</p>
+</section>
+<section class="chapter" id="steg-9">
+<h2>9. Feilsøking</h2>
+<h3>Nettsiden viser 404</h3>
+<p>404 betyr at siden ikke ble funnet.</p>
+<ol>
+<li>Kontroller på GitHub at filen ligger i <strong>public → index.html</strong>, med små bokstaver. Unngå <code>index.html.txt</code> eller en ekstra <code>public</code>-mappe inni <code>public</code>.
+</li>
+<li>Kontroller Cloudflare-innstillingene: <strong>Build output directory = public</strong>, mens <strong>Root directory</strong> er tomt.
+</li>
+<li>Se at siste produksjonspublisering har lykkes, og åpne adressen fra Cloudflare-prosjektet. Bruk rotadressen, uten <code>/public</code> på slutten.
+</li></ol>
+<h3>Cloudflare finner ikke repositoryet</h3>
+<ol>
+<li>Kontroller at du bruker GitHub-kontoen som eier repositoryet, eller har tilgang til det.
+</li>
+<li>Åpne <a href="https://github.com/settings/installations">GitHubs appinnstillinger</a>, finn Cloudflare-appen og klikk <strong>Configure</strong>.
+</li>
+<li>Under <strong>Repository access</strong> legger du til repositoryet du vil publisere. Lagre og gå tilbake til Cloudflare.
+</li>
+<li>Hvis repositoryet tilhører en skoleorganisasjon, spør administratoren om å godkjenne appen.
+</li></ol>
+<h3>Endringer vises ikke på nettsiden</h3>
+<ol>
+<li>Åpne filen du endret på GitHub (<code>public/eksempel.html</code> for quizen i malen), og kontroller at endringen faktisk er lagret.
+</li>
+<li>Kontroller at du lagret på samme branch som Cloudflares <strong>Production branch</strong>.
+</li>
+<li>Se under <strong>Deployments</strong> at den nyeste endringen har en vellykket publisering. Hvis ikke, les neste punkt.
+</li>
+<li>Åpne den faste produksjonsadressen, ikke en gammel forhåndsvisningsadresse. Last siden på nytt, eller prøv et privat nettleservindu.
+</li>
+<li>Hvis ingen publisering starter, kontroller under prosjektets innstillinger for <strong>Builds / Branch control</strong> at automatisk publisering av produksjonsbranchen er slått på. Navnene kan variere.
+</li></ol>
+<h3>Deployment feiler</h3>
+<ol>
+<li>Åpne den mislykkede publiseringen under <strong>Deployments</strong>, og les feilmeldingen i <strong>Build log</strong>.
+</li>
+<li>Sammenlign innstillingene med tabellen i <a href="#steg-5">steg 5</a>: <strong>None</strong>, <strong>exit 0</strong>, <strong>public</strong>, riktig branch og tom <strong>Root directory</strong>.
+</li>
+<li>Kontroller at <code>public/index.html</code> finnes på denne branchen og at Cloudflare fortsatt har GitHub-tilgang.
+</li>
+<li>Rett feilen og lagre en endring på GitHub; da prøver Cloudflare automatisk på nytt. Ved en midlertidig tjenestefeil kan du velge <strong>Retry deployment</strong> hvis knappen finnes.
+</li></ol>
+<p>Hvis Cloudflare melder at gratisgrensen er nådd, må du vente til grensen nullstilles. Du trenger ikke oppgradere for å følge guiden. Mer hjelp finnes i <a href="https://developers.cloudflare.com/pages/configuration/git-integration/troubleshooting/">Cloudflares feilsøkingsguide</a>.</p>
+<h3>Nettsiden fungerer ikke på mobil</h3>
+<p>Test først den publiserte adressen i mobilens vanlige nettleser. AI-generert kode kan mangle mobiltilpasning. Kopier koden tilbake til AI og be om å rette problemet, for eksempel:</p>
+<div class="code-block"><pre><code>Gjør denne index.html-filen mobilvennlig. Behold funksjonene. Bruk
+viewport-meta-tag, fleksible bredder, leselig tekst og store knapper.
+Unngå vannrett rulling ved 320 pikslers skjermbredde. Returner hele den
+oppdaterte filen med HTML, CSS og JavaScript uten eksterne avhengigheter.
+Her er koden min:
+[Lim inn innholdet fra public/eksempel.html, eller public/index.html hvis verktøyet ligger der]</code></pre></div>
+<p>Erstatt koden på GitHub, lagre og test på nytt etter publisering. En vellykket deployment bekrefter at filene er publisert; du må fortsatt teste at innhold og funksjoner virker.</p>
+</section>
+<section class="chapter" id="steg-10">
+<h2>10. Personvern og sikkerhet</h2>
+<ul>
+<li><strong>Ikke legg inn elevopplysninger.</strong> Unngå navn, e-postadresser, vurderinger og andre opplysninger om elever i koden eller oppgavene. Eksempelquizen samler ikke inn eller lagrer elevsvar.
+</li>
+<li><strong>Ikke legg inn API-nøkler eller passord.</strong> Koden i en nettside kan leses av besøkende, også når GitHub-repositoryet er privat. Verktøyet i denne guiden trenger ingen nøkler.
+</li>
+<li><strong>Regn nettsiden som offentlig.</strong> Alle som kjenner adressen kan normalt åpne den og dele den videre. En vanskelig adresse er ikke tilgangskontroll.
+</li>
+<li><strong>Test AI-generert kode og faginnhold.</strong> Prøv feil svar, riktig svar, hele oppgaveforløpet og omstart. Kontroller at løsninger og forklaringer er faglig riktige, og at verktøyet fungerer på elevenes enheter. Følg skolens rutiner for bruk av digitale verktøy.
+</li></ul>
+<details>
+<summary>Hvilke filer skal prosjektet inneholde?</summary>
+<p>Bruker du malen, får du denne strukturen:</p>
+<div class="code-block"><pre><code>README.md
+docs/
+  cloudflare-guide.md
+public/
+  index.html       (guiden som nettside)
+  eksempel.html    (mattequizen)
+  guide.css        (utseendet til guiden)
+  guide.js         (kopieringsknapper)</code></pre></div>
+<p>Alt i <strong>public</strong> publiseres som nettside. Forsiden viser guiden, og knappen <strong>Prøv mattequizen</strong> åpner eksempelsiden. README og Markdown-utgaven av guiden kan også leses på GitHub. Starter du med et tomt repository, er <code>public/index.html</code> den eneste filen Cloudflare trenger for å publisere eksempelappen. Du trenger ingen installasjonsfiler, Docker eller GitHub Actions.</p>
+</details>
+</section>
+        <div class="closing">
+          <p>Oppsett og dokumentasjonslenker kontrollert 16. oktober 2026. Knappenavn og gratisgrenser kan endres.</p>
+          <a href="#toppen">Til toppen ↑</a>
+        </div>
+      </article>
+    </div>
   </main>
-  <script>
-    "use strict";
-
-    // Endre oppgavene her. «answer» er riktig svar og må finnes én gang i «options».
-    const questions = [
-      { text: "7 + 5", answer: 12, options: [10, 11, 12, 13], explanation: "7 + 3 blir 10. Legg til 2 til, så får du 12." },
-      { text: "15 − 8", answer: 7, options: [6, 7, 8, 9], explanation: "15 − 5 blir 10. Trekk fra 3 til, så får du 7." },
-      { text: "3 × 4", answer: 12, options: [7, 10, 12, 14], explanation: "Tre grupper med fire blir 4 + 4 + 4 = 12." },
-      { text: "9 + 6", answer: 15, options: [14, 15, 16, 17], explanation: "9 + 1 blir 10. Legg til de siste 5, så får du 15." },
-      { text: "20 − 7", answer: 13, options: [11, 12, 13, 14], explanation: "20 − 5 blir 15. Trekk fra 2 til, så får du 13." },
-      { text: "5 × 5", answer: 25, options: [10, 20, 25, 30], explanation: "Fem grupper med fem blir 5 + 5 + 5 + 5 + 5 = 25." },
-      { text: "18 + 4", answer: 22, options: [20, 21, 22, 24], explanation: "18 + 2 blir 20. Legg til 2 til, så får du 22." },
-      { text: "14 − 6", answer: 8, options: [6, 7, 8, 9], explanation: "14 − 4 blir 10. Trekk fra 2 til, så får du 8." },
-      { text: "2 × 9", answer: 18, options: [11, 16, 18, 20], explanation: "To grupper med ni blir 9 + 9 = 18." },
-      { text: "25 + 15", answer: 40, options: [30, 35, 40, 45], explanation: "20 + 10 blir 30, og 5 + 5 blir 10. Til sammen blir det 40." }
-    ];
-
-    const byId = (id) => document.getElementById(id);
-    let current = 0;
-    let points = 0;
-    let answered = false;
-
-    function showQuestion(moveFocus = false) {
-      answered = false;
-      const question = questions[current];
-      byId("counter").textContent = `Oppgave ${current + 1} av ${questions.length}`;
-      byId("score").textContent = `${points} riktige`;
-      byId("progress").max = questions.length;
-      byId("progress").value = current;
-      byId("question").textContent = `${question.text} = ?`;
-      byId("feedback").textContent = "";
-      byId("feedback").removeAttribute("data-result");
-      byId("next").hidden = true;
-      byId("answers").replaceChildren();
-      question.options.forEach((option) => {
-        const button = document.createElement("button");
-        button.type = "button";
-        button.className = "answer";
-        button.textContent = option;
-        button.addEventListener("click", () => checkAnswer(option, button));
-        byId("answers").append(button);
-      });
-      if (moveFocus) byId("question").focus();
-    }
-
-    function checkAnswer(option, selectedButton) {
-      if (answered) return;
-      answered = true;
-      const question = questions[current];
-      const correct = option === question.answer;
-      if (correct) points += 1;
-      for (const button of byId("answers").children) {
-        button.disabled = true;
-        if (Number(button.textContent) === question.answer) button.classList.add("correct");
-      }
-      if (!correct) selectedButton.classList.add("wrong");
-      byId("feedback").dataset.result = correct ? "correct" : "wrong";
-      byId("feedback").textContent = `${correct ? "Riktig!" : `Ikke helt. Riktig svar er ${question.answer}.`} ${question.explanation}`;
-      byId("score").textContent = `${points} riktige`;
-      byId("progress").value = current + 1;
-      byId("next").textContent = current === questions.length - 1 ? "Se resultatet →" : "Neste oppgave →";
-      byId("next").hidden = false;
-    }
-
-    byId("next").addEventListener("click", () => {
-      if (!answered) return;
-      current += 1;
-      if (current < questions.length) {
-        showQuestion(true);
-      } else {
-        byId("quiz").hidden = true;
-        byId("result").hidden = false;
-        byId("summary").textContent = `Du fikk ${points} av ${questions.length} riktige. ${points === questions.length ? "Alle svarene var riktige!" : "Ta gjerne en ny runde og øv på det som var vanskelig."}`;
-        byId("result-title").focus();
-      }
-    });
-
-    byId("restart").addEventListener("click", () => {
-      current = 0;
-      points = 0;
-      byId("result").hidden = true;
-      byId("quiz").hidden = false;
-      showQuestion(true);
-    });
-
-    showQuestion();
-  </script>
+  <footer class="site-footer">
+    <p>Lag noe lite. Prøv det ut. Del det med elevene.</p>
+    <a href="eksempel.html">Prøv mattequizen</a>
+    <a href="https://github.com/Christergabba/edu-freehost">GitHub-repositoryet</a>
+    <a href="https://github.com/Christergabba/edu-freehost/blob/main/docs/cloudflare-guide.md">Guiden som Markdown</a>
+  </footer>
+  <p id="copy-status" class="sr-only" role="status" aria-live="polite"></p>
 </body>
 </html>
